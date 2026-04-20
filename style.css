@@ -399,6 +399,32 @@ span{
     font-size: 1rem;
 }
 
+
+/* estigo cards esgotado */
+
+.produto-esgotado {
+    filter: grayscale(100%);
+    opacity: 0.6;
+}
+
+.produto-esgotado .img-card img {
+    filter: grayscale(100%);
+}
+
+
+.produto-esgotado .btn-adc-carrinho {
+    background-color: #999; 
+    cursor: not-allowed; 
+    pointer-events: none; 
+}
+
+
+.produto-esgotado .selecao label {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+
 /* telas menores*/
 @media(max-width:768px){
     .logo{

@@ -23,53 +23,57 @@ async function renderizarProdutos() {
     // 2. Faz o loop nos produtos
     produtos.forEach(produto => {
         // Cria o HTML do card exatamente como o seu estilo original
+         // Se o produto NÃO estiver em estoque (!produto.em_estoque), então ele está esgotado (true)
+        const isEsgotado = !produto.em_estoque;
         const cardHTML = `
-            <div class="card-produto">
-                <div class="img-card">
-                    <img src="${produto.imagem_url}" alt="${produto.nome}">
-                </div>
-                <div class="info-card">
-                    <h3>${produto.nome}</h3>
-                    <p class="preco">R$ ${produto.preco.toFixed(2).replace('.', ',')}</p>
-                    
-                    <div class="selecao">
-                        <span>Tamanho:</span>
-                        <div class="opcao">
-                           <input type="radio" name="size-${produto.id}" id="p-${produto.id}" value="P"><label for="p-${produto.id}">P</label>
-                            <input type="radio" name="size-${produto.id}" id="m-${produto.id}" value="M"><label for="m-${produto.id}">M</label>
-                            <input type="radio" name="size-${produto.id}" id="g-${produto.id}" value="G"><label for="g-${produto.id}">G</label>
-                            <input type="radio" name="size-${produto.id}" id="gg-${produto.id}" value="GG"><label for="gg-${produto.id}">GG</label>
-                        </div>
+                <div class="card-produto ${isEsgotado ? 'produto-esgotado' : ''}">
+                    <div class="img-card">
+                        <img src="${produto.imagem_url}" alt="${produto.nome}">
                     </div>
-                    <div class="selecao">
-                <span>Cor:</span>
-                <div class="opicao-cores">
-                    <input type="radio" name="color-${produto.id}" id="preto-${produto.id}" value="preto">
+                    <div class="info-card">
+                        <h3>${produto.nome}</h3>
+                        <p class="preco">R$ ${produto.preco.toFixed(2).replace('.', ',')}</p>
+                        
+                        <div class="selecao">
+                            <span>Tamanho:</span>
+                            <div class="opcao">
+                                <input type="radio" name="size-${produto.id}" id="p-${produto.id}" value="P" ${isEsgotado ? 'disabled' : ''}><label for="p-${produto.id}">P</label>
+                                <input type="radio" name="size-${produto.id}" id="m-${produto.id}" value="M" ${isEsgotado ? 'disabled' : ''}><label for="m-${produto.id}">M</label>
+                                <input type="radio" name="size-${produto.id}" id="g-${produto.id}" value="G" ${isEsgotado ? 'disabled' : ''}><label for="g-${produto.id}">G</label>
+                                <input type="radio" name="size-${produto.id}" id="gg-${produto.id}" value="GG" ${isEsgotado ? 'disabled' : ''}><label for="gg-${produto.id}">GG</label>
+                            </div>
+                        </div>
 
-                    <label for="preto-${produto.id}" style="background-color: black;">
-                    </label>
+                        <div class="selecao">
+                            <span>Cor:</span>
+                            <div class="opicao-cores">
+                                <input type="radio" name="color-${produto.id}" id="preto-${produto.id}" value="preto" ${isEsgotado ? 'disabled' : ''}>
+                                <label for="preto-${produto.id}" style="background-color: black;"></label>
 
-                    <input type="radio" name="color-${produto.id}" id="branco-${produto.id}" value="branco">
+                                <input type="radio" name="color-${produto.id}" id="branco-${produto.id}" value="branco" ${isEsgotado ? 'disabled' : ''}>
+                                <label for="branco-${produto.id}" style="background-color: white; border: 1px solid #ddd;"></label>
 
-                    <label for="branco-${produto.id}" style="background-color: white; border: 1px solid #ddd;"></label>
+                                <input type="radio" name="color-${produto.id}" id="cinza-${produto.id}" value="cinza" ${isEsgotado ? 'disabled' : ''}>
+                                <label for="cinza-${produto.id}" style="background-color: gray;"></label>
 
-                    <input type="radio" name="color-${produto.id}" id="cinza-${produto.id}" value="cinza">
+                                <input type="radio" name="color-${produto.id}" id="vermelho-${produto.id}" value="vermelho" ${isEsgotado ? 'disabled' : ''}>
+                                <label for="vermelho-${produto.id}" style="background-color: red;"></label>
 
-                    <label for="cinza-${produto.id}" style="background-color: gray;"></label>
-
-                    <input type="radio" name="color-${produto.id}" id="vermelho-${produto.id}" value="vermelho">
-
-                    <label for="vermelho-${produto.id}" style="background-color: red;"></label>
-
-                    <input type="radio" name="color-${produto.id}" id="azul-${produto.id}" value="azul">
-
-                    <label for="azul-${produto.id}" style="background-color: #00008B;"></label>
+                                <input type="radio" name="color-${produto.id}" id="azul-${produto.id}" value="azul" ${isEsgotado ? 'disabled' : ''}>
+                                <label for="azul-${produto.id}" style="background-color: #00008B;"></label>
+                            </div>
+                        </div>
+                        
+                        <button 
+                            class="btn-adc-carrinho" 
+                            ${isEsgotado ? 'disabled' : ''}
+                            onclick="adicionarAoCarrinho('${produto.id}', '${produto.nome}', ${produto.preco}, '${produto.imagem_url}', this.closest('.card-produto'))"
+                        >
+                            ${isEsgotado ? 'Esgotado' : 'Adicionar ao carrinho'}
+                        </button>
+                    </div>
                 </div>
-            </div>
-                    <button class="btn-adc-carrinho" onclick="adicionarAoCarrinho('${produto.id}', '${produto.nome}', ${produto.preco}, '${produto.imagem_url}',this.closest('.card-produto'))">Adicionar ao carrinho</button>
-                </div>
-            </div>
-        `;
+            `;
 
         // 3. Filtra por marca para saber onde injetar
         if (produto.marca.toLowerCase() === 'nike') {
@@ -181,10 +185,11 @@ function atualizarInterfaceCarrinho() {
     containerItens.innerHTML = '';
     let totalGeral = 0;
     let totalItens = 0;
-
+    let precopromo = 30
     carrinho.forEach((item, index) => {
         totalGeral += item.preco * item.quantidade;
         totalItens += item.quantidade;
+       
       
 
         containerItens.innerHTML += `
@@ -217,11 +222,12 @@ function atualizarInterfaceCarrinho() {
             ultimaPromoAtivada = 3;
         }
     } 
-    else if (totalItens === 4) {
-        totalGeral = 120.00;
+    else if (totalItens >= 4) {
+
+        totalGeral=precopromo*totalItens
         htmlPromo = `
             <div style="background-color: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 11px; font-weight: bold; border: 1px solid #2e7d32;">
-                🚀 INCRÍVEL! Promoção ativada: 4 peças por R$ 120,00!
+                🚀 INCRÍVEL! Promoção ativada: Apartir de 4 peças sai R$ 30,00 p/unidade!
             </div>`;
             
         if (ultimaPromoAtivada !== 4) {

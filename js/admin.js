@@ -61,7 +61,8 @@ try {
         Swal.fire({
             title: "Sucesso!",
             text: "Produto cadastrado com sucesso!",
-            icon: "success"
+            icon: "success",
+            timer:200
         });
         location.reload(); // Recarrega para limpar os campos
 
@@ -70,3 +71,160 @@ try {
         alert("Erro ao cadastrar produto.");
     }
 }
+
+
+
+//selecionar os itens do menu e adicionar o evento de clique
+document.querySelectorAll('.menu-item[data-target]').forEach(item => {
+    item.addEventListener('click', function() {
+        // 1. Remover a classe 'active' de todos os itens do menu
+        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+        
+        // 2. Adicionar a classe 'active' ao item clicado
+        this.classList.add('active');
+
+        // 3. Esconder todas as seções
+        document.querySelectorAll('.card-admin').forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // 4. Mostrar apenas a seção alvo
+        const targetId = this.getAttribute('data-target');
+        document.getElementById(targetId).style.display = 'block';
+    });
+});
+
+//redenrizar as opitions de produtos no select do formulário de 
+// cadastro
+
+
+
+
+async function renderizarOptionsProdutos() {
+    // 1. Busca os produtos no Supabase (ajuste 'produtos' para o nome da sua tabela)
+    const { data: produtos, error } = await db
+        .from('produtos') 
+        .select('id, nome, preco, em_estoque');
+
+    if (error) {
+        console.error('Erro ao buscar produtos:', error.message);
+        return;
+    }
+
+    // 2. Seleciona os elementos do HTML
+    const selectPreco = document.getElementById('select-preco-produto');
+    const selectEstoque = document.getElementById('select-estoque-produto');
+
+    // 3. Limpa as opções atuais e adiciona a padrão
+    const templatePadrao = '<option value="">Selecione um produto...</option>';
+    selectPreco.innerHTML = templatePadrao;
+    selectEstoque.innerHTML = templatePadrao;
+
+    // 4. Preenche os selects com os dados do banco
+    produtos.forEach(produto => {
+        // Option para o select de Preço
+        const optionPreco = document.createElement('option');
+        optionPreco.value = produto.id;
+        optionPreco.textContent = `${produto.nome} - Atual: R$ ${produto.preco.toFixed(2)}`;
+        selectPreco.appendChild(optionPreco);
+
+        // Option para o select de Estoque
+        const optionEstoque = document.createElement('option');
+        optionEstoque.value = produto.id;
+        optionEstoque.textContent = `${produto.nome} - status atual > ${produto.em_estoque}`;
+        selectEstoque.appendChild(optionEstoque);
+    });
+}
+
+// Chame a função quando a página carregar
+document.addEventListener('DOMContentLoaded', () => {
+
+    renderizarOptionsProdutos();
+});
+
+
+//fubçaod attualizar preço do produto
+async function handleUpdatePrice() {
+
+    
+   const novoPreco = document.getElementById('nv-preco')
+   const selectproduto = document.getElementById('select-preco-produto')
+   const opcaoselecionada = selectproduto.value
+   const precoatualizado = parseFloat(novoPreco.value)
+  
+   if(!opcaoselecionada|| isNaN(precoatualizado) || precoatualizado <=0){
+       
+       Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'selecione um produto e um preço valido',
+            confirmButtonText: 'ok',
+            confirmButtonColor: '#ac1313'
+
+ 
+   })
+   return;
+} 
+   const{ error: updateError} = await db
+      .from('produtos')
+      .update({preco: precoatualizado})
+      .eq('id', opcaoselecionada)
+
+      if(updateError){
+        Swal.fire({
+            icon:'error',
+            title:'erro no banco de dados',
+            text: updateError.message,
+        })
+      }
+    else{
+        Swal.fire({
+            icon: 'success',
+            title: 'preço atualizado',
+            timer:200
+        })
+        
+        novoPreco.value =""
+        renderizarOptionsProdutos()
+    }
+
+  
+}
+
+
+
+//funçao controle de estoque 
+async function statusProduto() {
+    const produtoselecionado = document.getElementById('select-estoque-produto')
+    const opcaoselecionada = produtoselecionado.value
+    const ativarOuDesativar = document.getElementById('ativar-desativar')
+    const opcaostatus = ativarOuDesativar.value
+    
+
+     const{ error: updateError} = await db
+      .from('produtos')
+      .update({em_estoque: opcaostatus})
+      .eq('id', opcaoselecionada)
+
+      if(updateError){
+        Swal.fire({
+            icon:'error',
+            title:'erro no banco de dados',
+            text: updateError.message,
+        })
+      }
+    else{
+        Swal.fire({
+            icon: 'success',
+            title: 'status atualizado',
+            timer:200
+        })
+        
+      
+        renderizarOptionsProdutos()
+    }
+
+  
+    
+ }
+
