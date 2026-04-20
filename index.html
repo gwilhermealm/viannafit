@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vianna Fit</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <span class="material-symbols-outlined menu">menu</span>
+        <span class="logo"><img src="imagens/logo-horizontal.png" alt="logo" style="width: 250px; height:auto;"></span>
+        <div class="cardcout" onclick="abrirFecharCarrinho()">
+            <span class="material-symbols-outlined carrinho">shopping_bag</span>
+            <span class="contador" id="contador">0</span>
+        </div>
+    </header>
+ <aside id="carrinho-lateral" class="cart-close hidden">
+    <div class="cart-header">
+        <h2>Seu Carrinho</h2>
+        <button onclick="abrirFecharCarrinho()">X</button>
+    </div>
+    
+    <div id="carrinho-itens">
+        <p style="text-align: center; padding: 20px;">Carrinho vazio</p>
+    </div>
+
+    <div class="cart-footer">
+        <div class="total">
+            <span>Total:</span>
+            <span id="cart-total">R$ 0,00</span>
+        </div>
+        <button id="btn-finalizar" class="btn-finalizar" onclick="window.location.href='pagamento.html'">Finalizar Pedido</button>
+       
+    </div>
+ </aside>
+    <!-- slide de imagens-->
+    <section class="slider">
+        <figure></figure>
+        <figure></figure>
+        <figure></figure> 
+    </section>
+    <!--span anuncio de entrega-->
+    <div class="marquee-container">
+    <div class="marquee-content">
+        <div class="marquee-item">
+        <span>LOJA VIRTUAL📱</span>
+        <span class="separator">|</span>
+        <span>RETIRADA OU VIA UBER⚡️</span>
+        <span class="separator">|</span>
+        </div>
+        <div class="marquee-item">
+        <span>PACATUBA-CE📍</span>
+        <span class="separator">|</span>
+        <span>PROMOÇÕES IMPERDÍVEIS🔥</span>
+        <span class="separator">|</span>
+        <span>PACATUBA-CE📍</span>
+        <span class="separator">|</span>
+        <span>RETIRADA OU VIA UBER⚡️</span>
+        <span class="separator">|</span>
+        </div>
+    </div>
+    </div>
+    <!------------------------->
+    <nav class="marcas">
+        <span onclick="mostrarsecao('container-nike')" style="padding: 5px 30px; letter-spacing: 5px ; ">NIKE</span>
+        <span onclick="mostrarsecao('container-adidas')">ADIDAS</span>
+    </nav>
+<section class="section-nike cards-Produtos" id="container-nike">
+  
+    
+</section>
+<section class="section-adidas cards-Produtos" id="container-adidas">
+
+</section>
+   
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="js/config-supabase.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   
+   <script src="js/script.js"></script>
+</body>
+</html>
