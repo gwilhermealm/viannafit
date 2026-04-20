@@ -92,6 +92,13 @@
             background-color: #d01201;
             transform: scale(1.02);
         }
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
         @media(max-width: 480px) {
             .form-row { grid-template-columns: 1fr; }
@@ -134,29 +141,42 @@
                     <input type="text" id="numero" name="numero" required>
                 </div>
             </div>
+            <div class="radio-group">
+                 <label>bairro:</label>
+               <select name="" id="bairros" >
+                    <option value="consultar valor no whatsapp">Outro</option>
+                    <option value="15">Jose Walter</option>
+                    <option value="20">Messejana</option>
+                    <option value="24">Eusebio</option>
+                    <option value="10">Maracanaú</option>
+               </select>
+                 
+            </div>
+
+             <div class="radio-group">
+                <p>Taxa de entrega:  <span id="tx-entrega"></span></p>
+                 
+            </div>
 
             <div class="radio-group">
                 <p>Modelo de Entrega</p>
-                <label class="radio-option">
-                    <input type="radio" name="entrega" value="rota" checked>
-                    Entrega Rota
-                </label>
-                <label class="radio-option">
-                    <input type="radio" name="entrega" value="uber">
-                    Uber Flash ⚡
-                </label>
+                <select name="" id="modelo-entrega">
+                    <option value="UBER⚡️">UBER⚡️</option>
+                    <option value="rota">ROTA</option>
+                </select>
             </div>
 
             <div class="radio-group">
                 <p>Forma de Pagamento</p>
-                <label class="radio-option">
-                    <input type="radio" name="pagamento" value="pix" checked>
-                    PIX (Rápido e Seguro)
-                </label>
-                <label class="radio-option">
-                    <input type="radio" name="pagamento" value="dinheiro">
-                    Dinheiro
-                </label>
+                 <select name="" id="forma-pagamento">
+                    <option value="PIX">PIX</option>
+                    <option value="DINHEIRO">DINHEIRO</option>
+                </select>
+               
+            </div>
+            <div class="radio-group">
+               <p>Total: <span id="total"></span></p>
+                
             </div>
 
             <button type="submit" class="btn-finalizar">Confirmar Pedido</button>
@@ -164,5 +184,6 @@
     </main>
 
     <script src="js/api-cep.js"></script>
+    <script src="js/pagamento.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 
 
+let valorcarrinho =0
 
 //redenrizaçao de produtos
 async function renderizarProdutos() {
@@ -247,6 +248,8 @@ function atualizarInterfaceCarrinho() {
     // ... (resto do código de atualização do totalElemento e contador)
     contador.innerHTML = totalItens;
     totalElemento.innerText = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
+    valorcarrinho=totalGeral
+    console.log(valorcarrinho)
 }
 
 function removerDoCarrinho(index) {
@@ -275,4 +278,10 @@ function lancarToastPromo(mensagem) {
         iconColor: '#ffffff',
         title: mensagem
     });
+}
+function finalizarCarrinho(){
+  const carrinhostorege = valorcarrinho
+   localStorage.setItem('valorcarrinho', carrinhostorege)
+   window.location.href='pagamento.html'
+   
 }

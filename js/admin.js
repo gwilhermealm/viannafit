@@ -62,7 +62,7 @@ try {
             title: "Sucesso!",
             text: "Produto cadastrado com sucesso!",
             icon: "success",
-            timer:200
+            timer:1000
         });
         location.reload(); // Recarrega para limpar os campos
 
@@ -227,4 +227,5 @@ async function statusProduto() {
   
     
  }
+ 
 
