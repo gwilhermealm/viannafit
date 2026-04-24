@@ -109,7 +109,18 @@ header{
 }
 
 /* -----------   */
+a{
+  text-decoration: none;
+color: var(--cor-branca-font);
+}
+
+
 /*  cards produdos ******            */
+section{
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
 .section-nike{
   display: flex;
   gap: 20px;
@@ -145,6 +156,8 @@ header{
     overflow: hidden;
     transition: 0.3s;
     margin-top: 50px;
+  
+
    
    
 }
